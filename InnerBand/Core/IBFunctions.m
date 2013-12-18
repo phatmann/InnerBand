@@ -12,10 +12,10 @@
 // TYPES
 
 NSNumber *IB_BOX_BOOL(BOOL x) { return [NSNumber numberWithBool:x]; }
-NSNumber *IB_BOX_INT(NSInteger x) { return [NSNumber numberWithInt:x]; }
+NSNumber *IB_BOX_INT(NSInteger x) { return [NSNumber numberWithInteger:x]; }
 NSNumber *IB_BOX_SHORT(short x) { return [NSNumber numberWithShort:x]; }
 NSNumber *IB_BOX_LONG(long x) { return [NSNumber numberWithLong:x]; }
-NSNumber *IB_BOX_UINT(NSUInteger x) { return [NSNumber numberWithUnsignedInt:x]; }
+NSNumber *IB_BOX_UINT(NSUInteger x) { return [NSNumber numberWithUnsignedInteger:x]; }
 NSNumber *IB_BOX_FLOAT(float x) { return [NSNumber numberWithFloat:x]; }
 NSNumber *IB_BOX_DOUBLE(double x) { return [NSNumber numberWithDouble:x]; }
 
@@ -30,10 +30,10 @@ double IB_UNBOX_DOUBLE(NSNumber *x) { return [x doubleValue]; }
 // STRINGIFY
 
 NSString *IB_STRINGIFY_BOOL(BOOL x) { return (x ? @"true" : @"false"); }
-NSString *IB_STRINGIFY_INT(NSInteger x) { return [NSString stringWithFormat:@"%i", x]; }
+NSString *IB_STRINGIFY_INT(NSInteger x) { return [NSString stringWithFormat:@"%i", (int)x]; }
 NSString *IB_STRINGIFY_SHORT(short x) { return [NSString stringWithFormat:@"%i", x]; }
 NSString *IB_STRINGIFY_LONG(long x) { return [NSString stringWithFormat:@"%li", x]; }
-NSString *IB_STRINGIFY_UINT(NSUInteger x) { return [NSString stringWithFormat:@"%u", x]; }
+NSString *IB_STRINGIFY_UINT(NSUInteger x) { return [NSString stringWithFormat:@"%u", (unsigned int)x]; }
 NSString *IB_STRINGIFY_FLOAT(float x) { return [NSString stringWithFormat:@"%f", x]; }
 NSString *IB_STRINGIFY_DOUBLE(double x) { return [NSString stringWithFormat:@"%f", x]; }
 
@@ -106,10 +106,10 @@ BOOL IB_IS_GAME_CENTER_AVAILABLE(void) {
     return NSClassFromString(@"GKLocalPlayer") && [[[UIDevice currentDevice] systemVersion] compare:@"4.1" options:NSNumericSearch] != NSOrderedAscending;
 }
 
-BOOL IB_IS_EMAIL_ACCOUNT_AVAILABLE(void) {
-    Class composerClass = NSClassFromString(@"MFMailComposeViewController");
-    return [composerClass respondsToSelector:@selector(canSendMail)];
-}
+//BOOL IB_IS_EMAIL_ACCOUNT_AVAILABLE(void) {
+//    Class composerClass = NSClassFromString(@"MFMailComposeViewController");
+//    return [composerClass respondsToSelector:@selector(canSendMail)];
+//}
 
 BOOL IB_IS_GPS_ENABLED(void) {
     return IB_IS_GPS_ENABLED_ON_DEVICE() && IB_IS_GPS_ENABLED_FOR_APP();
@@ -126,26 +126,26 @@ BOOL IB_IS_GPS_ENABLED_ON_DEVICE(void) {
     [invocation invoke];
     [invocation getReturnValue:&isLocationServicesEnabled];
     
-    return locationClass && isLocationServicesEnabled;    
+    return locationClass && isLocationServicesEnabled;
 }
 
 BOOL IB_IS_GPS_ENABLED_FOR_APP(void) {
     // for 4.2+ only, we can check down to the app level
-    #ifdef kCLAuthorizationStatusAuthorized
-        Class locationClass = NSClassFromString(@"CLLocationManager");
+#ifdef kCLAuthorizationStatusAuthorized
+    Class locationClass = NSClassFromString(@"CLLocationManager");
     
-        if ([locationClass respondsToSelector:@selector(authorizationStatus)]) {
-            NSInteger authorizationStatus;
-            
-            NSMethodSignature *signature = [locationClass instanceMethodSignatureForSelector:@selector(authorizationStatus)];
-            NSInvocation *invocation = [NSInvocation invocationWithMethodSignature:signature];
-            
-            [invocation invoke];
-            [invocation getReturnValue:&authorizationStatus];
-            
-            return locationClass && (authorizationStatus == kCLAuthorizationStatusAuthorized);    
-        }
-    #endif
+    if ([locationClass respondsToSelector:@selector(authorizationStatus)]) {
+        NSInteger authorizationStatus;
+        
+        NSMethodSignature *signature = [locationClass instanceMethodSignatureForSelector:@selector(authorizationStatus)];
+        NSInvocation *invocation = [NSInvocation invocationWithMethodSignature:signature];
+        
+        [invocation invoke];
+        [invocation getReturnValue:&authorizationStatus];
+        
+        return locationClass && (authorizationStatus == kCLAuthorizationStatusAuthorized);
+    }
+#endif
     
     // we can't know this
     return YES;
@@ -157,20 +157,20 @@ void IB_DISPATCH_TO_MAIN_QUEUE(BOOL isAsync, void (^block)()) {
     if (isAsync) {
         dispatch_async(dispatch_get_main_queue(), block);
     } else {
-        dispatch_sync(dispatch_get_main_queue(), block);        
+        dispatch_sync(dispatch_get_main_queue(), block);
     }
 }
 
 void IB_DISPATCH_TO_GLOBAL_QUEUE(dispatch_queue_priority_t priority, BOOL isAsync, void (^block)()) {
-    if (isAsync) {    
+    if (isAsync) {
         dispatch_async(dispatch_get_global_queue(priority, 0), block);
     } else {
-        dispatch_sync(dispatch_get_global_queue(priority, 0), block);        
+        dispatch_sync(dispatch_get_global_queue(priority, 0), block);
     }
 }
 
 void IB_DISPATCH_TO_QUEUE(dispatch_queue_t queue, BOOL isAsync, void (^block)()) {
-    if (isAsync) {    
+    if (isAsync) {
         dispatch_async(queue, block);
     } else {
         dispatch_sync(queue, block);
