@@ -108,7 +108,7 @@ BOOL IB_IS_GAME_CENTER_AVAILABLE(void) {
 
 BOOL IB_IS_EMAIL_ACCOUNT_AVAILABLE(void) {
     Class composerClass = NSClassFromString(@"MFMailComposeViewController");
-    return [composerClass respondsToSelector:@selector(canSendMail)];
+    return [composerClass respondsToSelector:NSSelectorFromString(@"canSendMail")];
 }
 
 BOOL IB_IS_GPS_ENABLED(void) {
