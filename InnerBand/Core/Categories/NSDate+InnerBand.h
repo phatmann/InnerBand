@@ -55,6 +55,7 @@
 - (NSString *)formattedUTCDatePattern:(NSString *)datePattern;
 
 - (NSDate *)dateAsMidnight;
+- (NSDate *)dateAtStartOfDay;
 
 - (BOOL)isSameDay:(NSDate *)rhs;
 

@@ -234,6 +234,15 @@
 	return [_calendar dateFromComponents:_datecomp];
 }
 
+- (NSDate *)dateAtStartOfDay {
+    NSCalendar *_calendar = [NSCalendar currentCalendar];
+	NSDateComponents *_datecomp = [_calendar components:(NSYearCalendarUnit| NSMonthCalendarUnit | NSDayCalendarUnit | NSWeekCalendarUnit |  NSHourCalendarUnit | NSMinuteCalendarUnit | NSSecondCalendarUnit | NSWeekdayCalendarUnit | NSWeekdayOrdinalCalendarUnit) fromDate:self];
+	_datecomp.hour = 0;
+	_datecomp.minute = 0;
+	_datecomp.second = 0;
+	return [_calendar dateFromComponents:_datecomp];
+}
+
 - (BOOL)isSameDay:(NSDate *)rhs { 
 	NSCalendar* calendar = [NSCalendar currentCalendar];
 	NSDateComponents *comps = [calendar components:(NSYearCalendarUnit | NSMonthCalendarUnit | NSDayCalendarUnit) fromDate:self];
