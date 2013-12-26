@@ -59,4 +59,7 @@
 
 - (BOOL)isSameDay:(NSDate *)rhs;
 
++ (NSDate *)dateFromString:(NSString *)dateString withFormat:(NSDateFormatterStyle)dateStyle;
++ (NSDate *)dateFromString:(NSString *)dateString withPattern:(NSString *)datePattern;
+
 @end

@@ -251,5 +251,20 @@
 	return [comps year] == [compsRHS year] && [comps month] == [compsRHS month] && [comps day] == [compsRHS day];
 }
 
++ (NSDate *)dateFromString:(NSString *)dateString withFormat:(NSDateFormatterStyle)dateStyle {
+    NSDateFormatter *format = [[NSDateFormatter alloc] init];
+    
+	[format setDateStyle:dateStyle];
+	[format setTimeStyle:NSDateFormatterNoStyle];
+	
+	return [format dateFromString:dateString];
+}
+
++ (NSDate *)dateFromString:(NSString *)dateString withPattern:(NSString *)datePattern {
+    NSDateFormatter *format = [[NSDateFormatter alloc] init];
+    [format setDateFormat:datePattern];
+	return [format dateFromString:dateString];
+}
+
 @end
 
