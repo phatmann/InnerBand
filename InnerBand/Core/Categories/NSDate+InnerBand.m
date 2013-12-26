@@ -251,6 +251,10 @@
 	return [comps year] == [compsRHS year] && [comps month] == [compsRHS month] && [comps day] == [compsRHS day];
 }
 
++ (NSDate *)today {
+    return [[NSDate date] dateAtStartOfDay];
+}
+
 + (NSDate *)dateFromString:(NSString *)dateString withFormat:(NSDateFormatterStyle)dateStyle {
     NSDateFormatter *format = [[NSDateFormatter alloc] init];
     
