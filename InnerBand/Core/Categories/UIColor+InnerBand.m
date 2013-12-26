@@ -33,25 +33,25 @@ const NSInteger MAX_RGB_COLOR_VALUE_FLOAT = 255.0f;
 + (UIColor *)colorWith256Red:(NSInteger)r green:(NSInteger)g blue:(NSInteger)b alpha:(NSInteger)a {
 	return [UIColor colorWithRed:IB_RGB256_TO_COL(r) green:IB_RGB256_TO_COL(g) blue:IB_RGB256_TO_COL(b) alpha:IB_RGB256_TO_COL(a)];
 }
-			
+
 + (UIColor *) colorWithRGBA:(uint) hex {
-	return [UIColor colorWithRed:(CGFloat)((hex>>24) & MAX_RGB_COLOR_VALUE) / MAX_RGB_COLOR_VALUE_FLOAT 
-						   green:(CGFloat)((hex>>16) & MAX_RGB_COLOR_VALUE) / MAX_RGB_COLOR_VALUE_FLOAT 
-							blue:(CGFloat)((hex>>8) & MAX_RGB_COLOR_VALUE) / MAX_RGB_COLOR_VALUE_FLOAT 
+	return [UIColor colorWithRed:(CGFloat)((hex>>24) & MAX_RGB_COLOR_VALUE) / MAX_RGB_COLOR_VALUE_FLOAT
+						   green:(CGFloat)((hex>>16) & MAX_RGB_COLOR_VALUE) / MAX_RGB_COLOR_VALUE_FLOAT
+							blue:(CGFloat)((hex>>8) & MAX_RGB_COLOR_VALUE) / MAX_RGB_COLOR_VALUE_FLOAT
 						   alpha:(CGFloat)((hex) & MAX_RGB_COLOR_VALUE) / MAX_RGB_COLOR_VALUE_FLOAT];
 }
 
 + (UIColor *) colorWithARGB:(uint) hex {
-	return [UIColor colorWithRed:(CGFloat)((hex>>16) & MAX_RGB_COLOR_VALUE) / MAX_RGB_COLOR_VALUE_FLOAT 
-						   green:(CGFloat)((hex>>8) & MAX_RGB_COLOR_VALUE) / MAX_RGB_COLOR_VALUE_FLOAT 
-							blue:(CGFloat)(hex & MAX_RGB_COLOR_VALUE) / MAX_RGB_COLOR_VALUE_FLOAT 
+	return [UIColor colorWithRed:(CGFloat)((hex>>16) & MAX_RGB_COLOR_VALUE) / MAX_RGB_COLOR_VALUE_FLOAT
+						   green:(CGFloat)((hex>>8) & MAX_RGB_COLOR_VALUE) / MAX_RGB_COLOR_VALUE_FLOAT
+							blue:(CGFloat)(hex & MAX_RGB_COLOR_VALUE) / MAX_RGB_COLOR_VALUE_FLOAT
 						   alpha:(CGFloat)((hex>>24) & MAX_RGB_COLOR_VALUE) / MAX_RGB_COLOR_VALUE_FLOAT];
 }
 
 + (UIColor *) colorWithRGB:(uint) hex {
-	return [UIColor colorWithRed:(CGFloat)((hex>>16) & MAX_RGB_COLOR_VALUE) / MAX_RGB_COLOR_VALUE_FLOAT 
-						   green:(CGFloat)((hex>>8) & MAX_RGB_COLOR_VALUE) / MAX_RGB_COLOR_VALUE_FLOAT 
-							blue:(CGFloat)(hex & MAX_RGB_COLOR_VALUE) / MAX_RGB_COLOR_VALUE_FLOAT 
+	return [UIColor colorWithRed:(CGFloat)((hex>>16) & MAX_RGB_COLOR_VALUE) / MAX_RGB_COLOR_VALUE_FLOAT
+						   green:(CGFloat)((hex>>8) & MAX_RGB_COLOR_VALUE) / MAX_RGB_COLOR_VALUE_FLOAT
+							blue:(CGFloat)(hex & MAX_RGB_COLOR_VALUE) / MAX_RGB_COLOR_VALUE_FLOAT
 						   alpha:1.0];
 }
 
@@ -69,24 +69,24 @@ const NSInteger MAX_RGB_COLOR_VALUE_FLOAT = 255.0f;
 	if (hexStringLength == 3) {
 		// RGB, once character each (each should be repeated)
 		hexString = [NSString stringWithFormat:@"%c%c%c%c%c%c", [hexString characterAtIndex:0], [hexString characterAtIndex:0], [hexString characterAtIndex:1], [hexString characterAtIndex:1], [hexString characterAtIndex:2], [hexString characterAtIndex:2]];
-		hex = strtoul([hexString UTF8String], NULL, 16);	
-
+		hex = (uint)strtoul([hexString UTF8String], NULL, 16);
+        
 		return [self colorWithRGB:hex];
 	} else if (hexStringLength == 4) {
 		// RGBA, once character each (each should be repeated)
 		hexString = [NSString stringWithFormat:@"%c%c%c%c%c%c%c%c", [hexString characterAtIndex:0], [hexString characterAtIndex:0], [hexString characterAtIndex:1], [hexString characterAtIndex:1], [hexString characterAtIndex:2], [hexString characterAtIndex:2], [hexString characterAtIndex:3], [hexString characterAtIndex:3]];
-		hex = strtoul([hexString UTF8String], NULL, 16);		
-
+		hex = (uint)strtoul([hexString UTF8String], NULL, 16);
+        
 		return [self colorWithRGBA:hex];
 	} else if (hexStringLength == 6) {
 		// RGB
-		hex = strtoul([hexString UTF8String], NULL, 16);		
+		hex = (uint)strtoul([hexString UTF8String], NULL, 16);
 		
 		return [self colorWithRGB:hex];
 	} else if (hexStringLength == 8) {
 		// RGBA
-		hex = strtoul([hexString UTF8String], NULL, 16);		
-
+		hex = (uint)strtoul([hexString UTF8String], NULL, 16);
+        
 		return [self colorWithRGBA:hex];
 	}
 	
@@ -99,10 +99,10 @@ const NSInteger MAX_RGB_COLOR_VALUE_FLOAT = 255.0f;
 - (NSString *) hexString {
 	const CGFloat *components = CGColorGetComponents(self.CGColor);
 	
-	NSInteger red = (int)(components[0] * MAX_RGB_COLOR_VALUE);
-	NSInteger green = (int)(components[1] * MAX_RGB_COLOR_VALUE);
-	NSInteger blue = (int)(components[2] * MAX_RGB_COLOR_VALUE);
-	NSInteger alpha = (int)(components[3] * MAX_RGB_COLOR_VALUE);
+	unsigned int red = (int)(components[0] * MAX_RGB_COLOR_VALUE);
+	unsigned int green = (int)(components[1] * MAX_RGB_COLOR_VALUE);
+	unsigned int blue = (int)(components[2] * MAX_RGB_COLOR_VALUE);
+	unsigned int alpha = (int)(components[3] * MAX_RGB_COLOR_VALUE);
 	
 	if (alpha < 255) {
 		return [NSString stringWithFormat:@"#%02x%02x%02x%02x", red, green, blue, alpha];
@@ -158,5 +158,5 @@ const NSInteger MAX_RGB_COLOR_VALUE_FLOAT = 255.0f;
 	const CGFloat* rgba = CGColorGetComponents(self.CGColor);
 	return rgba[3];
 }
-						
+
 @end

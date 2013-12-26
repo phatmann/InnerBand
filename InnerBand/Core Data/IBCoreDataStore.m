@@ -173,6 +173,10 @@ static IBCoreDataStore *gMainStoreInstance;
 	}
 }
 
++ (void)save {
+    [[self mainStore] save];
+}
+
 #pragma mark - Deprecated Accessors (Use NSManagedObject+InnerBand)
 
 - (NSArray *)allForEntity:(NSString *)entityName error:(NSError **)error {
