@@ -25,6 +25,8 @@
 }
 
 @property (nonatomic, readonly) NSManagedObjectContext *context;
+@property (nonatomic, readonly) NSPersistentStore *persistentStore;
+@property (nonatomic) NSDictionary *metadata;
 
 + (IBCoreDataStore *)mainStore;
 + (IBCoreDataStore *)createStore;
@@ -89,6 +91,10 @@
 
 /* Returns an entity description by name. */
 - (NSEntityDescription *)entityDescriptionForEntity:(NSString *)entityName;
+
+/* Get and set metadata objects */
+- (id)metadataObjectForKey:(id)key;
+- (void)setMetadataObject:(id)object forKey:(id<NSCopying>)key;
 
 // TODO: Add Class versions
 

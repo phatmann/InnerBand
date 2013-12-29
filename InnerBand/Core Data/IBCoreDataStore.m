@@ -33,6 +33,8 @@ static IBCoreDataStore *gMainStoreInstance;
 
 - (void)createManagedObjectContext;
 
+@property (nonatomic) BOOL metadataChanged;
+
 @end
 
 @implementation IBCoreDataStore
@@ -129,6 +131,29 @@ static IBCoreDataStore *gMainStoreInstance;
 	return _managedObjectContext;
 }
 
+- (NSPersistentStore *)persistentStore {
+	return _managedObjectContext.persistentStoreCoordinator.persistentStores[0];
+}
+
+- (NSDictionary *)metadata {
+	return [[self persistentStore] metadata];
+}
+
+- (void)setMetadata:(NSDictionary *)metadata {
+	[[self persistentStore] setMetadata:metadata];
+    self.metadataChanged = YES;
+}
+
+- (id)metadataObjectForKey:(id)key {
+    return self.metadata[key];
+}
+
+- (void)setMetadataObject:(id)object forKey:(id<NSCopying>)key {
+    NSMutableDictionary *metadata = [self.metadata mutableCopy];
+    metadata[key] = object;
+    self.metadata = metadata;
+}
+
 + (void)clearAllData {
 	NSError *error = nil;
 
@@ -159,17 +184,21 @@ static IBCoreDataStore *gMainStoreInstance;
 - (void)save {
 	NSError *error = nil;
 
-	if ([_managedObjectContext hasChanges] && ![_managedObjectContext save:&error]) {
-		NSArray* detailedErrors = [[error userInfo] objectForKey:NSDetailedErrorsKey];
+	if ([_managedObjectContext hasChanges] || self.metadataChanged) {
+        if ([_managedObjectContext save:&error]) {
+            self.metadataChanged = NO;
+        } else {
+            NSArray* detailedErrors = [[error userInfo] objectForKey:NSDetailedErrorsKey];
 
-		if(detailedErrors != nil && [detailedErrors count] > 0) {
-			for(NSError* detailedError in detailedErrors) {
-				NSLog(@"  DetailedError: %@", [detailedError userInfo]);
-			}
-		}
-		else {
-			NSLog(@"  %@", [error userInfo]);
-		}
+            if(detailedErrors != nil && [detailedErrors count] > 0) {
+                for(NSError* detailedError in detailedErrors) {
+                    NSLog(@"  DetailedError: %@", [detailedError userInfo]);
+                }
+            }
+            else {
+                NSLog(@"  %@", [error userInfo]);
+            }
+        }
 	}
 }
 
