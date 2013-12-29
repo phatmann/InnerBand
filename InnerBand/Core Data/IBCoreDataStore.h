@@ -41,9 +41,6 @@
 /* Saves context. */
 - (void)save;
 
-/* Saves the context for the main store. */
-+ (void)save;
-
 /* Create a new entity by name. */
 - (NSManagedObject *)createNewEntityByName:(NSString *)entityName;
 
