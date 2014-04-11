@@ -181,7 +181,7 @@ static IBCoreDataStore *gMainStoreInstance;
 /**
  Save the context.
  */
-- (void)save {
+- (BOOL)save {
 	NSError *error = nil;
 
 	if ([_managedObjectContext hasChanges] || self.metadataChanged) {
@@ -198,12 +198,16 @@ static IBCoreDataStore *gMainStoreInstance;
             else {
                 NSLog(@"  %@", [error userInfo]);
             }
+            
+            return NO;
         }
 	}
+    
+    return YES;
 }
 
-+ (void)save {
-    [[self mainStore] save];
++ (BOOL)save {
+    return [[self mainStore] save];
 }
 
 #pragma mark - Deprecated Accessors (Use NSManagedObject+InnerBand)

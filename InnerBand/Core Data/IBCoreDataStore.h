@@ -41,10 +41,10 @@
 + (void)clearAllData;
 
 /* Saves context. */
-- (void)save;
+- (BOOL)save;
 
 /* Saves the context for the main store. */
-+ (void)save;
++ (BOOL)save;
 
 /* Create a new entity by name. */
 - (NSManagedObject *)createNewEntityByName:(NSString *)entityName;
