@@ -234,40 +234,12 @@
 	return [_calendar dateFromComponents:_datecomp];
 }
 
-- (NSDate *)dateAtStartOfDay {
-    NSCalendar *_calendar = [NSCalendar currentCalendar];
-	NSDateComponents *_datecomp = [_calendar components:(NSYearCalendarUnit| NSMonthCalendarUnit | NSDayCalendarUnit | NSWeekCalendarUnit |  NSHourCalendarUnit | NSMinuteCalendarUnit | NSSecondCalendarUnit | NSWeekdayCalendarUnit | NSWeekdayOrdinalCalendarUnit) fromDate:self];
-	_datecomp.hour = 0;
-	_datecomp.minute = 0;
-	_datecomp.second = 0;
-	return [_calendar dateFromComponents:_datecomp];
-}
-
 - (BOOL)isSameDay:(NSDate *)rhs { 
 	NSCalendar* calendar = [NSCalendar currentCalendar];
 	NSDateComponents *comps = [calendar components:(NSYearCalendarUnit | NSMonthCalendarUnit | NSDayCalendarUnit) fromDate:self];
 	NSDateComponents *compsRHS = [calendar components:(NSYearCalendarUnit | NSMonthCalendarUnit | NSDayCalendarUnit) fromDate:rhs];
     
 	return [comps year] == [compsRHS year] && [comps month] == [compsRHS month] && [comps day] == [compsRHS day];
-}
-
-+ (NSDate *)today {
-    return [[NSDate date] dateAtStartOfDay];
-}
-
-+ (NSDate *)dateFromString:(NSString *)dateString withFormat:(NSDateFormatterStyle)dateStyle {
-    NSDateFormatter *format = [[NSDateFormatter alloc] init];
-    
-	[format setDateStyle:dateStyle];
-	[format setTimeStyle:NSDateFormatterNoStyle];
-	
-	return [format dateFromString:dateString];
-}
-
-+ (NSDate *)dateFromString:(NSString *)dateString withPattern:(NSString *)datePattern {
-    NSDateFormatter *format = [[NSDateFormatter alloc] init];
-    [format setDateFormat:datePattern];
-	return [format dateFromString:dateString];
 }
 
 @end
